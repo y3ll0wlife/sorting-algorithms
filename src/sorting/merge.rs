@@ -1,52 +1,57 @@
-pub fn merge_sort(arr: &mut Vec<i32>, l: i32, r: i32) {
-    if l < r {
-        let m = l + (r - l) / 2;
-
-        merge_sort(&mut arr, l, m);
-        merge_sort(&arr, m + 1, r);
-
-        merge(arr, l, m, r);
+pub fn merge_sort(arr: &mut Vec<i32>, begin: i32, end: i32) {
+    if begin >= end {
+        return;
     }
+
+    let mid = begin + (end - begin) / 2;
+
+    merge_sort(arr, begin, mid);
+    merge_sort(arr, mid + 1, end);
+
+    merge(arr, begin, mid, end);
 }
 
-fn merge(arr: &mut Vec<i32>, p: i32, q: i32, r: i32) {
-    let n1: i32 = q - p + 1;
-    let n2: i32 = r - q;
+fn merge(arr: &mut Vec<i32>, left: i32, mid: i32, right: i32) {
+    let n1: i32 = mid - left + 1;
+    let n2: i32 = right - mid;
 
-    let mut a1 = vec![0; n1 as usize];
-    let mut a2 = vec![0; n2 as usize];
+    let mut left_array = vec![0; n1 as usize];
+    let mut right_array = vec![0; n2 as usize];
 
     for i in 0..n1 {
-        a1[i as usize] = arr[(p + i) as usize];
+        left_array[i as usize] = arr[(left + i) as usize];
     }
 
     for j in 0..n2 {
-        a2[j as usize] = arr[(q + 1 + j) as usize];
+        right_array[j as usize] = arr[(mid + 1 + j) as usize];
     }
 
-    let mut i = 0;
-    let mut j = 0;
-    let mut k = p;
+    let mut index_one = 0;
+    let mut index_two = 0;
+    let mut index_merged = left;
 
-    while i < n1 && j < n2 {
-        if a1[i as usize] <= a2[j as usize] {
-            arr[k as usize] = a1[i as usize];
-            i += 1;
+    while index_one < n1 && index_two < n2 {
+        if left_array[index_one as usize] <= right_array[index_two as usize] {
+            arr[index_merged as usize] = left_array[index_one as usize];
+            index_one += 1;
         } else {
-            arr[k as usize] = a2[j as usize];
-            j += 1;
+            arr[index_merged as usize] = right_array[index_two as usize];
+            index_two += 1;
         }
+        index_merged += 1;
     }
 
-    while i < n1 {
-        arr[k as usize] = a1[i as usize];
-        i += 1;
-        k += 1;
+    while index_one < n1 {
+        arr[index_merged as usize] = left_array[index_one as usize];
+
+        index_one += 1;
+        index_merged += 1;
     }
 
-    while j < n2 {
-        arr[k as usize] = a2[j as usize];
-        j += 1;
-        k += 1;
+    while index_two < n2 {
+        arr[index_merged as usize] = right_array[index_two as usize];
+
+        index_two += 1;
+        index_merged += 1;
     }
 }
