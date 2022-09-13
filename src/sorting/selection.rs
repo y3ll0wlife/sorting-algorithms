@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub fn selection_sort(arr: &mut Vec<i32>) {
     let size = arr.len();
 
