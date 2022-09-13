@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 pub fn merge_sort(arr: &mut Vec<i32>, begin: i32, end: i32) {
     if begin >= end {
         return;
